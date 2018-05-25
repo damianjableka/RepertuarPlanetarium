@@ -83,7 +83,7 @@ function tlumacz_tab_js_php($nazwa_pliku)
 	if($i!=(count($tablica)-2))
 	$wsad.=",";
    }
-   $wsad.=");";
+   $wsad.=");"; 
    
   $wsad=str_replace(',",','," ",',$wsad);
     $wsad=str_replace('""','"',$wsad);
