@@ -35,7 +35,7 @@
    $dlugosc=filesize($nazwa_pliku)-3;
    $zawartosc=fread($plik,$dlugosc);
    fclose($plik);
-   $tbl_zawartosci=explode("={\"",$zawartosc);
+   $tbl_zawartosci=explode("={\"",$zawartosc); 
    $tbl_dane=explode("\",\"",$tbl_zawartosci[1]);
    $a = array();
    for($i=0;$i<count($tbl_dane);$i++)
