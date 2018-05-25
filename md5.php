@@ -26,4 +26,4 @@ if(isset($_POST['log'])&&!empty($_POST['haslo'])&&!empty($_POST['login']))
 ?>
  
  </body>
-</html>
+</html> 
