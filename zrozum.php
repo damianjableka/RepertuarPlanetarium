@@ -297,7 +297,7 @@ printf("	<input type='submit' value='zapisz' name='save'></form></center>");
 }
  
 if(isset($_POST['save'])=="zapisz"&&isset($_SESSION['zapis'])&&$_SESSION['zapis']==1)
-  {
+  { 
   
   $tbl_nazwa_dnia=$_SESSION['nazwa_dnia'];
      $tbl_niecz=$_SESSION['nieczynne'];
