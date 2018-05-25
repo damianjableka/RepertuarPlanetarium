@@ -1,0 +1,142 @@
+html, body {
+	background-image: url(tlo.jpg);
+	background-attachment: fixed;
+	color: #000;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+a { 
+
+	color: white; text-decoration: none; 
+
+}
+
+a:hover {
+ 	color: white;
+ 	font-weight: bold;
+}
+
+
+p.tytul {
+	color: #FF9C00;
+	text-align: left;
+}
+
+
+p.tytul_menu {
+	color: #FF9C00;
+	text-align: center;
+}
+
+
+p.red {
+	color: #FF0000;
+
+}
+
+
+p.yellow {
+	color: #FFFF00;
+
+}
+
+p.green1 {
+	color: #00FF00;
+
+}
+
+p.blue {
+	color: #003eFF;
+	font-size: 14px;
+	font-weight: bold;
+	
+}
+
+p.red_big {
+	color: #FF0000;
+	font-size: 14px;
+	font-weight: bold;
+	
+}
+
+p.green {
+	color: #00FF00;
+	font-weight: bold;
+}
+
+
+.small {
+	font-size: 10px;
+}
+
+table.tabelka td {
+	padding: 5px;
+}
+
+#top {
+	width: 897px;
+	background-color: #000;
+	margin: 0 auto;
+}
+
+#NAGLOWEK {
+	background-color: #000;
+}
+
+#MENU {
+	width: 267px;
+	height: 461px;
+	float: left;
+	overflow: hidden;
+	background-color: #000;
+	background: url("obrazy/menu.jpg");
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size:9pt; 
+	color:#FFFFFF;
+
+}
+
+#TRESC {
+	margin-top: 30px;
+	width: 580px;
+	float: left;
+	overflow: hidden;
+	background-color: #000;
+	margin-left: 30px;
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size:9pt; 
+	color:#FFFFFF;
+	text-align: left;
+	
+}
+
+#STOPKA {
+	clear: both;
+	width: 897px;
+	background-color: #000;
+}
+
+#TLO {
+	width: 550px;
+	height: 330px;
+	background: url('obrazy/asteroids.jpg');
+	background-position: 16% 0%;
+	background-repeat: no-repeat;
+}
+
+#TABELKA TD {
+
+	border: 0px solid white;
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size:9pt;
+	color:#FFFFFF;
+	padding: 0px;
+	
+}
+
+td.right {
+	text-align: right;
+	width: 80px;
+}

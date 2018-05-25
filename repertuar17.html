@@ -1,0 +1,558 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//PL">
+<html>
+<head>
+
+ <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=utf-8">
+ <meta http-equiv="Content-Language" content="pl">
+ <meta name="Author" content="Damian Jabłeka">
+<title>Repertuar Planetarium Śląskiego</title>
+  <meta name="verify-v1" content="vWGuINwQWmTyWgri24GIXQaSmNS3itAs8Udf2mtIS/0=" />
+  <script type="text/javascript" SRC="opisy.js">
+  </script>
+  <script type="text/javascript" SRC="rep.js?ul=<?PHP printf(time());?>">
+  </script>
+    <script type="text/javascript" SRC="nieczynne.js">
+  </script>
+ <script type="text/javascript" SRC="nazwa_dnia.js?ul=<?PHP printf(time());?>">
+ </script>
+ 
+<script type="text/javascript">
+
+// 13:16 09.01.2013 dodano usuniecie dat z nieczynnych
+
+    /*  include("opisy.js");
+	  include("rep.js");
+	  
+    function include(filename)
+    {
+	    var head = document.getElementsByTagName('head')[0];
+	   
+    	script = document.createElement('script');
+	    script.src = filename;
+    	script.type = 'text/javascript';
+	   
+	  head.appendChild(script)
+     }
+*/
+function zmien_kolor(zm_kolor)
+ {
+  text_k="<table border=0 width=800><tr><td width=600></td><td align=center>"
+  
+  if(zm_kolor)
+  {
+  document.body.classList.remove('domyslny');
+  document.body.classList.add('wysoki_k');
+  text_k+="<a href=javascript:zmien_kolor(0)>Aktualny schemat kolorów:<br>"
+  text_k+="wysoki kontrast<br>"
+  text_k+="zmień na domyslny</a>"
+//<a href=javascript:zmien_kolor(1)>wysoki kontrast</a> | <a href=javascript:zmien_kolor(0)>domyslny</a>
+  
+ // document.body.classList.toggle('wysoki_k')
+  }
+  else
+  {
+ //  document.body.classList.toggle('domyslny')
+   document.body.classList.remove('wysoki_k');
+  document.body.classList.add('domyslny');
+   text_k+="<a href=javascript:zmien_kolor(1)><img src='symbol.jpg' width=50 alt='zmień wygląd na wysoki kontrast'></a>"
+  }
+  text_k+="</td></tr></table><br>"
+  wyswietl(text_k,"zmien_kolor");
+ }
+ 
+function zrozum(czas_text)
+ {
+  var czas_tbl=czas_text.split(" ");
+  var czas_o=new Date();
+      czas_o.setFullYear(czas_tbl[0]);
+      czas_o.setMonth(czas_tbl[1]-1);
+      czas_o.setDate(czas_tbl[2]);
+	  czas_o.setHours(czas_tbl[3]);
+	  czas_o.setMinutes(czas_tbl[4]);
+	  czas_o.setSeconds(0.00);
+	  czas_o.setMilliseconds(0);
+  return(czas_o.getTime())
+ }
+ 
+function sort_fc(Item1,Item2)
+{
+  var item1 = Item1[0];
+  var item2 = Item2[0];
+  if (item1 > item2) return 1;
+  if (item1 < item2) return -1;
+  return 0;
+}
+
+function godzina_form(x)
+	{
+	 var uu=new Date(x);
+	 var godz_f=uu.getHours();
+	 var minuta_f=uu.getMinutes();
+       if(godz_f<10)
+         godz_f="0"+godz_f;
+       if(minuta_f<10)
+       minuta_f="0"+minuta_f;
+	 calosc=godz_f+":"+minuta_f;
+	 return(calosc);
+ 	} 
+
+	  dni=new Array("Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota");
+	  miechy=new Array("Stycznia","Lutego","Marca","Kwietnia","Maja","Czerwca","Lipca","Sierpnia","Września","Października","Listopada","Grudnia");
+	  miech=new Array("Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień");
+	  ile_seansow=opisy.length;
+	  ile_rep=rep.length;
+	  
+	 function aktualne_s() 
+	  {
+	  
+	//  var tablica_ass={"12 10 02 12 00": "wartosc A","12 10 03 12 00": "wartosc b","12 10 04 12 00": "wartosc c"};
+	//  alert("12 10 02 12 00: "+tablica_ass["12 10 02 12 00"]+"\n 12 10 4 12 00: "+tablica_ass["12 10 04 12 00"]+"\n nir ma takkiego "+tablica_ass["12 10 10 12 00"]);
+	//  uuuddd=0;
+	// if(tablica_ass["12 10 02 12 00"])
+	 //  uuuddd=1
+	   
+	  // alert(uuuddd);
+	   
+	 var akt_czas=new Date();
+	 var dzis=akt_czas.getDay();
+	 var i;
+	 aktualne=new Array()
+
+	 var k=0;
+	 for(i=0;i<ile_seansow;i++)
+	 {
+	  var j;
+	  for(j=0;j<rep[i].length;j++)
+	  {
+		var s=zrozum(rep[i][j]);
+    	 var leka=new Date(s);
+		
+        var dam=1;          // vv   mechanizm odrzucania od aktualnych seansow w dni nieczynne
+		for(jan=0;jan<nieczynne.length;jan++)
+        {
+		 var jab=new Date(zrozum(nieczynne[jan]));
+		// alert("jab: "+jab.getDate+"\n leka: "+leka.getDate);
+		 if(jab.getDate()==leka.getDate()&&jab.getMonth()==leka.getMonth()&&jab.getFullYear()==leka.getFullYear()) 
+		  { 
+		  // alert("==")
+		   dam=0;
+		  } 
+		} 
+	   if(s>=akt_czas.getTime()&&dam)
+	    {
+		aktualne[k]=new Array(s,i);
+		k++
+		}
+	  }
+	  
+	 }
+      for(jan=0;jan<nieczynne.length;jan++)
+	   { 
+	    if(zrozum(nieczynne[jan])>=akt_czas.getTime())
+		{
+	    aktualne[k]=new Array(zrozum(nieczynne[jan]),-1);
+		k++;
+		}
+	   }
+	   
+	 aktualne.sort(sort_fc)
+	 dlugosc_aktualne=aktualne.length
+	 
+	 return(aktualne.length)
+	 }
+	  
+	  
+    function wg_daty(seans_opis)
+    {
+		 
+	 var text;
+	 text="<table border=0 width=800 cellspacing=0 cellpadding=0>";
+	 text+="<tr><td colspan=3 align=center>Repertuar Planetarium Śląskiego</td></tr>";
+	  text+="<tr><td style='height: 15'></td><td></td><td></td></tr>"
+	 text+="<tr><td colspan=3 align=center>Według daty | <a href=javascript:wg_seansu(-1,0)>Według Tytułu</a></td></tr>";
+	 text+="<tr><td style='height: 15'></td><td></td><td></td></tr>"
+     
+      var i
+	  var dzien_stary=-1; 
+	  var   uugu=0
+
+	 for(i=0;i<aktualne.length;i++)
+	 {
+	  var seans_date=new Date(aktualne[i][0]);
+	  var dzien=seans_date.getDate();
+	  text+="<tr>";
+	  
+	  dzien_nazwy_dnia=seans_date.getFullYear()+" "+(seans_date.getMonth()+1)+" "+seans_date.getDate();
+//alert(dzien_nazwy_dnia);
+zawartosc_nd=""
+if(nazwa_dnia[dzien_nazwy_dnia])
+  zawartosc_nd=" - "+nazwa_dnia[dzien_nazwy_dnia]
+	  if(aktualne[i][1]==-1)
+	  {
+	   
+	   text+="<tr><td colspan=3 align=center class='nieczynnehr'>"+dni[seans_date.getDay()]+" "+seans_date.getDate()+" "+miechy[seans_date.getMonth()]+" "+seans_date.getFullYear()+"<br>"+zawartosc_nd+"</td></tr>";
+	   if(!nazwa_dnia[dzien_nazwy_dnia])
+    	   text+="<tr><td colspan=3 align=center class='nieczynne'>nieczynne</td></tr>";
+//yu
+	  }
+	  else
+	  {
+	   if(dzien!=dzien_stary)
+	    {
+	     text+="<tr><td colspan=3 align=center class='uu'>"+dni[seans_date.getDay()]+" "+seans_date.getDate()+" "+miechy[seans_date.getMonth()]+" "+seans_date.getFullYear()+"<br>"+zawartosc_nd+"</td></tr>";
+		 dzien_stary=dzien;
+		 // i tu
+		}
+		
+		 var g=((seans_opis==aktualne[i][0])?"class='opis'":"")
+		text+="<tr "+g+"><td  width=40 style='width: 40'><font class='godzina'>"+godzina_form(aktualne[i][0])+"</font></td>";
+    
+		if(seans_opis==aktualne[i][0])
+		{
+		 text+="<td colspan=2 > <a href=javascript:wg_daty(0)>"+opisy[aktualne[i][1]][0]+" << </a></td></tr>";
+
+		 text+="<tr "+g+"><td  style='width: 40'></td><td  ><div id='opis_efekt'></div></td ><td ></td></tr>";
+		 uuuu=opisy[aktualne[i][1]][1]
+		 uugu=1
+		 text+="<tr "+g+"><td ></td><td  >czas trwania: "+opisy[aktualne[i][1]][3]+"min</td ><td  ></td></tr>";
+		 text+="<tr "+g+"><td ></td><td  >"+((opisy[aktualne[i][1]][2]=="D")?"Seans dla dzieci":"Seans popularny")+"</td ><td  ></td></tr>";
+		 text+="<tr "+g+"><td ></td><td  >godziny wyświtlania seansu:</td ><td  ></td ></tr>";
+		 text+="<tr "+g+"><td ></td><td  >"+kiedygramy(aktualne[i][1],1,0)+"</td><td  ></td ></tr>";
+		}
+		else
+		{
+		text+="<td colspan=2 width=760> <a href=javascript:wg_daty("+aktualne[i][0]+")>"+opisy[aktualne[i][1]][0]+" >> </a></td></tr>";
+		}
+	  }
+	 }
+	 
+	 
+	 text+="</table>"
+	 wyswietl(text,"main");
+	 dlugosc=0
+	 if(uugu)
+	    start_efekt(uuuu,"opis_efekt")
+	
+	 return;
+	}
+
+	 
+	 function start_efekt(tekst_l,gdzie_l)
+   {
+   dlugosc=tekst_l.length
+   count=dlugosc
+   tbl_dost=new Array()
+   tbl_wysw=new Array()
+   for(j=0;j<dlugosc;j++)
+    {
+    tbl_dost[j]=j
+	tbl_wysw[j]=0
+	}
+	
+    zegar_eff=null;
+    zapuszczony_eff=false;
+    stop_efekt()
+    generuj(tekst_l,gdzie_l)   
+   }
+	
+	function generuj(tekst_g,gdzie_e)
+	  {
+	  ile_naraz=tekst_g.length/15
+	  for(g=0;g<ile_naraz;g++)//ile naraz
+	  {
+	  ktory=Math.floor((Math.random()*count)); 
+	  tbl_wysw[tbl_dost[ktory]]=1
+	  tbl_dost[ktory]=tbl_dost[count-1]
+	  count--
+	  }  
+	  out="<table border=0 cellspacing=0 cellpadding=0 ><tr><td class='opis'>"
+     for(i=0;i<dlugosc;i++)
+	  {
+	  kolor=(tbl_wysw[i])?"class='efekt_w'":"class='efekt_n'"
+	  out+="<font "+kolor+">"+tekst_g[i]+"</font>"
+	  }
+      out+="</td></tr></table>"
+      wyswietl(out,gdzie_e)
+	  if(count>0)
+	     {
+	   	  zegar_eff=setTimeout("generuj('"+tekst_g+"','"+gdzie_e+"')",10);
+	      }
+		  else
+		  {
+		    out="<table border=0 cellspacing=0 cellpadding=0 ><tr><td class='opis'>"
+		    out+="<font class='efekt_w'>"+tekst_g+"</font>"
+			out+="</td></tr></table>"
+		  wyswietl(out,gdzie_e)
+		  }
+		zapuszczony_eff=true;
+	  }
+
+function stop_efekt()		
+	{
+	if(zapuszczony_eff)
+	 clearTimeout(zegar_eff);
+	 zapuszczony_eff=false;
+	return;
+	}
+	 
+	 
+	 
+	 
+	 function kiedygramy(ktory,s,info)
+	 {
+	  granie="<table border=0 cellspacing=0 cellpadding=0 >"
+	  var j
+	  var srok=-1
+	  var smies=-1
+	  var sdzien=-1
+	  var k=0
+	  var klasa=((s)?"class='opis_l'":"class='wg_seansu'")
+	  for(j=0;j<aktualne.length;j++)
+	   if(ktory==aktualne[j][1])
+	   {
+	   k++
+	    var dd=new Date(aktualne[j][0])
+		var rok=dd.getFullYear();
+		var mies=dd.getMonth();
+        var dzien=dd.getDate();
+         granie+="<tr "+klasa+"><td  width=80>"+((srok!=rok)?rok:" ")+" </td><td width=120> "+((smies!=mies)?miech[mies]:" ")+"  </td><td  width=40> "+((sdzien!=dzien)?dzien:" ")+" </td><td   width=70> <font class='godzina'>"+godzina_form(aktualne[j][0])+"</font></td></tr>"  	
+	    srok=rok;
+		smies=mies;
+		sdzien=dzien;
+        }
+		if(!k)
+		 granie+="<tr "+klasa+"><td   ></td></tr>"
+	  granie+="</table>";
+	  if(!info)
+      return(granie) 
+	  else
+	  return(k);
+	 }
+	 
+function polskie(Item1,Item2)
+{
+  var alfabet=' ~`!@#$%^&*()-_=+0123456789aAąĄbBcCćĆdDeEęĘfFgGhHiIjJkKlLłŁmMnNńŃoOóÓpPqQrRsSśŚtTuUvVwWxXyYzZźŹżŻ';
+  
+  var item1dl=Item1[0].length;
+  var item2dl=Item2[0].length;
+  var i=0;
+  while(alfabet.indexOf(Item1[0][i])==alfabet.indexOf(Item2[0][i]))
+  {
+   if(i>item1dl&&item1dl==item2dl) return 0;
+   if(i>item1dl) return -1;
+   if(i>item2dl) return 1;
+   if (alfabet.indexOf(Item1[0][i]) > alfabet.indexOf(Item2[0][i])) return 1;
+   if (alfabet.indexOf(Item1[0][i]) < alfabet.indexOf(Item2[0][i])) return -1;
+   i++ 
+  }
+  
+ if (alfabet.indexOf(Item1[0][i]) > alfabet.indexOf(Item2[0][i])) return 1;
+ if (alfabet.indexOf(Item1[0][i]) < alfabet.indexOf(Item2[0][i])) return -1;
+  return 0;
+}
+	 
+	function alfabetycznie(tbl)
+	{
+	 arr=new Array()
+	 var k=0;
+	 for(k=0;k<tbl.length;k++)
+	  {
+	   arr[k]=new Array();
+	   arr[k][0]=tbl[k][0];
+	   arr[k][1]=k;
+	  }
+	  
+	  //arr.sort(sort_fc);
+	  arr.sort(polskie);
+	  
+	 var order=new Array
+	 
+	 for(k=0;k<tbl.length;k++)
+	  {
+	   order[k]=arr[k][1];
+	  }
+	  
+	  return order;
+	  }
+	
+	function wg_seansu(ktory,pokaz_niegrane)
+    {
+	 var uugu=0;
+	 var text;
+	 g="class='opis'"
+	 text="<table border=0 width=800 cellspacing=0 cellpadding=0 >";
+	 text+="<tr><td colspan=3 align=center>Repertuar Planetarium Śląskiego</td></tr>";
+	 	 text+="<tr><td style='height: 15'></td><td></td><td ></td></tr>"
+	 text+="<tr><td colspan=3 align=center><a href=javascript:wg_daty(0)>Według daty </a> | Według Tytułu</td></tr>";
+	 text+="<tr><td style='height: 15'></td><td></td><td ></td></tr>"
+	 urd="style='width: 200'"
+	 var j
+	  niegrane="";
+	 
+      kolejnosc=alfabetycznie(opisy);
+	  
+	 for(j=0;j<opisy.length;j++)
+	  {
+	    text_g="";
+	
+	   if(ktory==kolejnosc[j])
+	   {
+	     text_g+="<tr ><td colspan=3 class='uu'><a href=javascript:wg_seansu(-1,"+pokaz_niegrane+")>"+opisy[kolejnosc[j]][0]+" << </a></td></tr>"
+    	 text_g+="<tr "+g+"><td  "+urd+"></td><td ><div id='opis_efekt'></div></td ><td  ></td></tr>";
+		 
+		  uuuu=opisy[kolejnosc[j]][1];
+		 uugu=1
+		 text_g+="<tr "+g+"><td  width=200></td><td >czas trwania: "+opisy[kolejnosc[j]][3]+"min</td ><td ></td></tr>";
+		 text_g+="<tr "+g+"><td  width=200></td><td  >"+((opisy[kolejnosc[j]][2]=="D")?"Seans dla dzieci":"Seans popularny")+"</td ><td ></td></tr>";
+		 text_g+="<tr "+g+"><td  width=200></td><td >"+kiedygramy(kolejnosc[j],1,0)+"</td><td ></td></tr>"
+	   }
+	   else
+	    {
+	    text_g+="<tr ><td colspan=3 class='uu'><a href=javascript:wg_seansu("+kolejnosc[j]+","+pokaz_niegrane+")>"+opisy[kolejnosc[j]][0]+" >> </a></td></tr>"
+	    text_g+="<tr ><td "+urd+"></td><td>"+kiedygramy(kolejnosc[j],0,0)+"</td></tr>"
+	   }
+	   
+	   if(kiedygramy(kolejnosc[j],0,1))
+	     text+=text_g 
+	     else
+		  niegrane+=text_g;
+	  }
+	  //tutaj znikanie aktualnie niegranych.
+	  if(pokaz_niegrane)
+	  {
+	  text+="<tr ><td colspan=3 class='uu'><a href=javascript:wg_seansu(-1,0)>ukryj seanse aktualnie niewyświetlane</a></td></tr>"
+	  text+=niegrane;
+	  }
+	  else
+	  {
+	  text+="<tr ><td colspan=3 class='uu'><a href=javascript:wg_seansu(-1,1)>pokaż seanse aktualnie niewyświetlane</a><br></td></tr>"
+	  }
+	  
+	 wyswietl(text,"main");
+	 
+	 if(uugu)
+	    start_efekt(uuuu,"opis_efekt")
+	 return;
+	}
+	
+	function wyswietl(co,gdzie)
+	{
+	if(document.all)
+    { 
+     document.all[gdzie].innerHTML=co;
+    }
+    else
+    {
+     if(document.layers)
+     {
+      document.layers[gdzie].document.open();
+      document.layers[gdzie].document.write(co);
+      document.layers[gdzie].document.close();
+     }
+     if(document.getElementById)
+      document.getElementById(gdzie).innerHTML=co;
+    }
+	}
+		
+
+    function start()
+	{
+	aktualne_s();
+  	wg_daty(0);
+	return;
+	}
+
+</script>
+<style type="text/css">
+/* <![CDATA[ */
+
+body.domyslny {background-color: black}
+.domyslny .table {background-color: black; border-top-style: none; border-bottom-style: none; border-left-style: none;  border-right-style:none; border-collapse: collapse; }
+.domyslny * {
+ FONT-SIZE: 15px;
+ COLOR: #dddddd;
+ font-family: 'Times New Roman','Courier New','Arial'}
+
+.domyslny A:link {
+ color:#ffffff;
+ text-decoration: none}
+.domyslny A:visited {
+ color:#ffffff;
+ font-style: italic;
+ text-decoration: none }
+.domyslny A:active {
+ color:#ffffff;
+ text-decoration: none}
+.domyslny A:hover {
+ color:#ffffff;
+ text-decoration: overline;
+ text-decoration: underline
+}
+.domyslny font.godzina {color: #ff9c00}
+.domyslny font.efekt_n {color: #000022}
+.domyslny font.efekt_w {color: #dddddd}
+.domyslny .hr {color: #555555;}
+
+.domyslny td.uu {border-top-style: solid; border-top-color: #101157; border-top-width: medium; color: #1a1bed}
+.domyslny td.nieczynnehr {border-top-style: solid; border-top-color: #101157; border-top-width: medium; color: #bb0000}
+.domyslny td.nieczynne {color: #bb0000}
+
+.domyslny tr {background-color: black; border-top-style: none; border-bottom-style: none; border-left-style: none;  border-right-style:none }
+.domyslny td.opis {background-color: #001424}
+.domyslny tr.opis {background-color: #001424}
+.domyslny tr.opis_l {background-color: #001424}
+.domyslny tr.opis_l:hover {background-color: #112536}
+.domyslny tr.wg_seansu:hover {background-color: #222222}
+body.wysoki_k {background-color: white}
+.wysoki_k .table {background-color: white; border: none; border-top-style: none; border-bottom-style: none; border-left-style: none;  border-right-style:none; border-collapse: collapse; }
+.wysoki_k .body {background-color: white}
+.wysoki_k * {
+ FONT-SIZE: 20px;
+ font-weight: bold;
+ COLOR: #000000;
+ font-family: 'Times New Roman','Courier New','Arial'}
+
+.wysoki_k A:link {
+ color:#000000;
+ text-decoration: none}
+.wysoki_k A:visited {
+ color:#000000;
+ font-style: italic;
+ text-decoration: none }
+.wysoki_k A:active {
+ color:#000000;
+ text-decoration: none}
+.wysoki_k A:hover {
+ color:#000000;
+ text-decoration: overline;
+ text-decoration: underline
+}
+.wysoki_k font.godzina {color: #0052ff}
+.wysoki_k font.efekt_w {color: #000000}
+.wysoki_k font.efekt_n {color: #ffffff}
+.wysoki_k .hr {color: #ffffff;}
+
+.wysoki_k td.uu {border-top-style: solid; border-top-color: #101157; border-top-width: medium; color: #1a1bed}
+.wysoki_k td.nieczynnehr {border-top-style: solid; border-top-color: #101157; border-top-width: medium; color: #bb0000}
+.wysoki_k td.nieczynne {color: #bb0000}
+
+
+
+.wysoki_k tr {background-color: white; border-top-style: none; border-bottom-style: none; border-left-style: none;  border-right-style:none }
+.wysoki_k td.opis {background-color: #ffffff}
+.wysoki_k tr.opis {background-color: #ffffff}
+.wysoki_k tr.opis_l {background-color: #ffffff}
+.wysoki_k tr.opis_l:hover {background-color: #cccccc}
+.wysoki_k tr.wg_seansu:hover {background-color: #cccccc}
+
+/* ]]> */ 
+</style>
+</head>
+ <body onload='start(),zmien_kolor(0)' class="domyslny">
+ <!--<script language="javascript" type="text/javascript" src="licznik/licznik.php"></script>-->
+ <center>
+    <div id="zmien_kolor" style="border: none"> </div>
+   <div id="main" style="border: none"> </div>
+   
+ </body>
+</html>
